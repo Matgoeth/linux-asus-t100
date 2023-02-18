@@ -170,9 +170,9 @@ mmcblk0
 ```
 - Mount the EFI System Partition on the new system
   * `mount /dev/mmcblk2p1 /target/boot/efi`
-- Then, we have to mount some other filesystems before chrooting:
+- Then, we have to mount some other filesystems before chrooting: (changed base on https://github.com/5bentz/linux-asus-t100/issues/9)
 ```
-for dir in /dev /dev/pts /proc /run /sys;
+for dir in /dev /dev/pts /proc /run /sys /sys/firmware/efi/efivars;
   do mount --bind "$dir" /target/"$dir";
 done
 ```
