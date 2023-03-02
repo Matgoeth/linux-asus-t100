@@ -237,11 +237,11 @@ GRUB_TIMEOUT=1
 
 ### 10. Sound
 #### NOTE for T100TA:
-According to me it gave nice results [original source]([https://askubuntu.com/questions/1393842/after-a-few-minutes-of-audio-video-playback-computer-starts-beeping-21-10-asu](https://github.com/thesofproject/sof/issues/3868#issuecomment-1409748114))
-```
+According to me it gave nice results [original source](https://github.com/thesofproject/sof/issues/3868#issuecomment-1409748114))
+
 Just to add my own experience, I had this buzzing problem on an Acer Aspire Switch 10 tablet (Intel Atom Z3745), even with fully updated Ubuntu 22.04.1.
-Adding options snd-intel-dspcfg dsp_driver=2 to /etc/modprobe.d/alsa-base.conf made the sound stop working entirely (there were no output devices found), but adding options snd_sof sof_debug=1 instead seems to have fixed the issue.
-```
+Adding `options snd-intel-dspcfg dsp_driver=2` to `/etc/modprobe.d/alsa-base.conf` made the sound stop working entirely (there were no output devices found), but adding `options snd_sof sof_debug=1` instead seems to have fixed the issue.
+
 
 #### Rest of fixes:
 /!\ T100TA and T100CHI only. Other T100's (T100TAF and T100H\*) has other audio device numbers. You will find files for your device on the [Asus T100 group drive](https://drive.google.com/drive/folders/0B4s5KNXf2Z36VVJDQnY5NEltdmc).
