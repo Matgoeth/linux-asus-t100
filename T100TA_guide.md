@@ -54,7 +54,7 @@ The defaults should be alright, I'd just recommend setting the partition scheme 
 
 ### 3. Add the bootable GRUB file for our IA32-powered ASUS T100.
 Once Rufus has finished to flash the media:
-- Copy the [bootia32.efi](https://github.com/jfwells/linux-asus-t100ta/raw/master/boot/bootia32.efi) file in the `EFI/BOOT` directory. This directory should already contain various EFI files: probably  `BOOTx64.EFI` and `grubx64.efi`.
+- Copy the [bootia32.efi](https://github.com/jfwells/linux-asus-t100ta/raw/master/boot/bootia32.efi) (or [my mirror here](https://github.com/Matgoeth/linux-asus-t100/blob/master/bootia32.efi)) file in the `EFI/BOOT` directory. This directory should already contain various EFI files: probably  `BOOTx64.EFI` and `grubx64.efi`.
 
 If, like jfwells, you would like to build `bootia32.efi` by yourself, follow his guide (primarily for Linux Ubuntu and other Linux Debian-derivatives): https://github.com/jfwells/linux-asus-t100ta/tree/master/boot
 
@@ -189,8 +189,9 @@ TARGET
 │ └─/dev/pts
 ├─/proc
 ├─/run
-├─/sys
-└─/boot/efi
+├─/boot/efi
+└─/sys
+  └─/sys/firmware/efi/efivars
 ```
 - Install grub for EFI-IA32 architecture, and update its config file
   * `apt update`
@@ -238,6 +239,7 @@ GRUB_TIMEOUT=1
 /!\ T100TA and T100CHI only. Other T100's (T100TAF and T100H\*) has other audio device numbers. You will find files for your device on the [Asus T100 group drive](https://drive.google.com/drive/folders/0B4s5KNXf2Z36VVJDQnY5NEltdmc).
 - Download the following folder
   * https://drive.google.com/drive/folders/0B4DiU2o72FbuOXdwRXhfZ3ZmOFE
+  * or [my mirror here](https://github.com/Matgoeth/linux-asus-t100/blob/master/SOUND.tar)
 - Extract it and enter the folder
 - Follow the instructions from the file README.txt
   * `sudo rm /var/lib/alsa/asound.state`
