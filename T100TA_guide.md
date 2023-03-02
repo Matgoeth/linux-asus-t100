@@ -1,8 +1,8 @@
 >  This work is licensed under the Creative Commons Attribution 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-# Installing Ubuntu on ASUS T100 TA
+# Installing Mint on ASUS T100 TA
 
-As of November 2018. (20181125)
+As of March 2023. (20230302)
 
 John Brodie said
 > The problem with step by step guides. The information is only accurate for up to a few months.
@@ -26,8 +26,9 @@ Contribute to the guide here: https://github.com/5bentz/linux-asus-t100
 
 ## The guide starts here!
 
-### 1. Download Ubuntu 18.04.1
-Download the ISO file you prefer. I personally like Xubuntu for its lightweight, yet powerful & customizable desktop environment.
+### 1. Download Mint 21.1
+Download the ISO file you prefer. I personally like Mint MATE for its lightweight, yet powerful & customizable desktop environment.
+- Mint: https://linuxmint.com/download.php
 - Ubuntu: https://www.ubuntu.com/download/desktop
 - Xubuntu: https://xubuntu.org/download
 - Other torrents: http://torrent.ubuntu.com/
@@ -47,7 +48,7 @@ https://tutorials.ubuntu.com/tutorial/tutorial-create-a-usb-stick-on-windows#0
 The defaults should be alright, I'd just recommend setting the partition scheme to GTP UEFI, since ASUS T100 and Windows 10 are compatible with it. Make sure you are flashing the *correct* device.
 
 - Partition scheme: GPT UEFI
-- Name: 11 characters max, for example *UBUNTU1804*
+- Name: 11 characters max, for example *MATE21*
 - File system: default (FAT32)
 - Cluster size: default (8192 bytes)
 - Image Mode: default (ISO).
@@ -351,6 +352,14 @@ For any software, the rule of thumb is to override the configuration by creating
 Add these kernel command-line parameters: `tsc=reliable clocksource=tsc`
 
 # History
+
+##### 20230203
+* I'm taking this guide over (I've branched out) - as always, I do not take responsibility for what you do to your device (plus ALWAYS be vary of people in the internets)
+* tidied it up a bit
+* MINTified the guide
+* added sound stuttering fix to sound section
+* there was one crucial mountpoint missing - it's now added
+
 
 ##### 20181125
 * Verify the mounts before installing bootloader
