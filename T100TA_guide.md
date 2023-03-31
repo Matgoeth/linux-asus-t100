@@ -316,6 +316,18 @@ Bluetooth should already partially work. For a better support, e.g. *pairing* an
   * `mv BCM4324B3.hcd /lib/firmware/brcm/`
 - Reboot.
 
+### 15. Right click when no keyboard
+There is a workaround if you want to emulate option button in T100TA. Generally it is advised to also enable touchpad gesture using 2 fingers (but not 3). I am using Gnome so following works for me (xbindkeys seems to have some issues with Gnome mods sometimes). Inspired by: https://wiki.debian.org/InstallingDebianOn/Asus/T100TA
+- Install xdotool 'apt-get install xdotool'
+- Install xbindkeys 'apt-get install xdotool'
+- Paste following section into your main config file (default is ~/.xbindkeysrc)
+```
+"xdotool click 3" 
+    m:0x40 + c:248 + Release
+    Mod4 + NoSymbol + Release
+```
+- Done (reload config or reboot)
+
 ## Troubleshooting
 
 ### 1. No WiFi
@@ -352,6 +364,9 @@ For any software, the rule of thumb is to override the configuration by creating
 Add these kernel command-line parameters: `tsc=reliable clocksource=tsc`
 
 # History
+
+##### 20230331
+* Notes for right click emulation (finally working)
 
 ##### 20230203
 * I'm taking this guide over (I've branched out) - as always, I do not take responsibility for what you do to your device (plus ALWAYS be vary of people in the internets)
