@@ -1,0 +1,164 @@
+#!/usr/bin/env bash
+
+# - Screen rotator -
+# ==================
+#
+# A generic screen rotator script for hybrid/2-in-1 laptops.
+
+
+# Copyright 2019 /dev/fra
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# below script has been downloaded from 
+# https://git.sr.ht/~_dev_fra/t100ta-utility-scripts/tree/master/item/screen-rotator
+
+
+# ___ User defined variables ___________________________________________________
+
+# Screen name as identified by xrandr.
+screen_name=DSI-1
+
+# Comma separated list of input devices as identified by xinput.
+input_devices=11,13
+
+
+# ___ Common variables _________________________________________________________
+#
+# There should be no need to change the variables in this section.
+
+# PID file for the auto_rotation function.
+pidfile="$HOME/.screen-rotator.pid"
+
+
+# ___ Functions ________________________________________________________________
+
+print_usage() {
+    cat << EOF
+
+A generic screen rotator for hybrid/2-in-1 laptops.
+
+Usage: $0 manual|auto
+
+ manual    Execute a manual rotation from landscape mode to portrait mode or
+           vice versa.
+ auto      Enable the automatic rotation using the on-board accelerometers.
+
+At each screen reorientation will correspond a proper rotation of the input
+devices (e.g. touchscreen, touchpad).
+
+EOF
+}
+
+exit_now() {
+    printf "%s\\n" "$1" >&2
+    notify-send "Screen rotator" "$1"
+    exit 1
+}
+
+display_info() {
+    printf "%s\\n" "$1" >&2
+    notify-send "Screen rotator" "$1"
+}
+
+rotate_screen() {
+    case $1 in
+        normal) transformation_matrix='1 0 0 0 1 0 0 0 1' ;;
+        left) transformation_matrix='0 -1 1 1 0 0 0 0 1' ;;
+        inverted) transformation_matrix='-1 0 1 0 -1 1 0 0 1' ;;
+        right) transformation_matrix='0 1 0 -1 0 1 0 0 1' ;;
+    esac
+
+    # Change screen orientation.
+    xrandr --output "$screen_name" --rotate "$1"
+
+    # Rotate input devices as well.
+    for input_id in "${input_devices[@]}"; do
+        # $transformation_matrix must be unquoted here!
+        xinput set-prop "$input_id" 'Coordinate Transformation Matrix' \
+               $transformation_matrix
+    done
+}
+
+manual_rotation() {
+    # Get current screen orientation.
+    orientation=$(xrandr -q --verbose | grep "$screen_name" | cut -d" " -f6)
+
+    # Set new rotation.
+    case $orientation in
+        normal) new_rotation=left ;;
+        *) new_rotation=normal ;;
+    esac
+
+    # Rotate screen and input devices.
+    rotate_screen "$new_rotation"
+}
+
+auto_rotation() {
+    # Remove the pid file if the function get terminated.
+    trap 'rm "$pidfile"; kill 0' EXIT
+
+    display_info "Automatic rotation enabled."
+
+    # Get current orientation of the tablet from monitor-sensor and set new
+    # rotation.
+    while read -r line; do
+        case "${line##*: }" in
+            normal) new_rotation=normal ;;
+            left-up) new_rotation=left ;;
+            bottom-up) new_rotation=inverted ;;
+            right-up) new_rotation=right ;;
+        esac
+
+        # Rotate screen and input devices.
+        rotate_screen "$new_rotation"
+
+    done < <(monitor-sensor | grep --line-buffered 'Accel.*changed')
+}
+
+
+# ___ Main body ________________________________________________________________
+
+# Abort if required applications cannot be found.
+requirements=(xrandr xinput monitor-sensor notify-send)
+for application in "${requirements[@]}"; do
+    hash "$application" 2>/dev/null || exit_now "ERROR: $application not found."
+done
+
+# Abort if there are none or several screens connected.
+screens_num=$(xrandr | grep -c -w connected)
+[[ $screens_num -ne 1 ]] &&
+    exit_now "Aborting, there are $screens_num screens connected."
+
+# Convert $input_devices in an array.
+IFS=, read -r -a input_devices <<< "$input_devices"
+
+# Check if the auto_rotation function has already been started by another
+# instance of this script and terminate it. The pid file is removed by the
+# trap set in the function.
+if [[ -e $pidfile ]]; then
+    kill "$(head -n 1 "$pidfile")" ||
+        exit_now "ERROR: Unable to kill running instance!"
+    rotate_screen normal
+    display_info "Auto-rotation disabled."
+    exit
+fi
+
+# Execute required action.
+case $1 in
+    manual) manual_rotation ;;
+    auto) auto_rotation & echo $! >> "$pidfile" ;;
+    *) print_usage ;;
+esac
+
+exit
