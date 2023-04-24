@@ -323,10 +323,12 @@ There is a workaround if you want to emulate option button in T100TA. Generally 
 - Paste following section into your main config file (default is ~/.xbindkeysrc)
 ```
 "xdotool click 3" 
-    m:0x40 + c:248 + Release
-    Mod4 + NoSymbol + Release
+    m:0x40 + c:133 + Release
 ```
 - Done (reload config or reboot)
+
+### 16. Automatic screen rotation script
+Download screen rotation script from [my mirror](https://github.com/Matgoeth/linux-asus-t100/blob/master/screen-rotator.txt) and add it to autostart with 'auto' setting
 
 ## Troubleshooting
 
@@ -364,6 +366,10 @@ For any software, the rule of thumb is to override the configuration by creating
 Add these kernel command-line parameters: `tsc=reliable clocksource=tsc`
 
 # History
+
+##### 20230424
+* Updated guide with finally working right-key combo for xbindkeys 
+* added mirror for screen rotator script
 
 ##### 20230331
 * Notes for right click emulation (finally working)
