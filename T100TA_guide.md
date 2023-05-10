@@ -19,6 +19,7 @@ Contribute to the guide here: https://github.com/5bentz/linux-asus-t100
 - Various tutorials with screenshots https://tutorials.ubuntu.com/tutorial/
 - Linuxium and Isorespin: customize Ubuntu ISOs! https://linuxiumcomau.blogspot.com/2017/06/customizing-ubuntu-isos-documentation.html
 - (2016) Guide for the T100 Ubuntu 16.04: https://drive.google.com/drive/folders/0B4s5KNXf2Z36QW9acnY4RXd3bW8
+- Tips and tricks on Mint forums: https://forums.linuxmint.com/viewtopic.php?t=336841
 
 ### Other sources that made this guide possible
 - (old) Latest steps to install Ubuntu on the Asus T100TA: http://www.jfwhome.com/2016/01/04/latest-steps-to-install-ubuntu-on-the-asus-t100ta/
